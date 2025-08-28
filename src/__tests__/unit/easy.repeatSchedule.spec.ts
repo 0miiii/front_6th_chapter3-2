@@ -37,7 +37,7 @@ import { generateRepeatSchedules } from '../../utils/repeatScheduleUtils';
 
 describe('generateRepeatSchedules', () => {
   it('31일에 매월 반복 일정을 선택한다면, 매월 마지막이 아닌, 31일에만 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-05-31',
       startTime: '09:00',
@@ -49,11 +49,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-05-31', '2025-07-31', '2025-08-31']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-05-31', '2025-07-31', '2025-08-31']);
   });
 
   it('윤년 29일에 매년 반복 일정을 선택한다면, 29일에만 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2020-02-29',
       startTime: '09:00',
@@ -65,11 +67,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2020-02-29', '2024-02-29']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2020-02-29', '2024-02-29']);
   });
 
   it('매일 반복 시 반복 종료일을 설정하지 않으면, 2025-10-30일까지 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-10-21',
       startTime: '09:00',
@@ -81,7 +85,9 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual([
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual([
       '2025-10-21',
       '2025-10-22',
       '2025-10-23',
@@ -96,7 +102,7 @@ describe('generateRepeatSchedules', () => {
   });
 
   it('매주 반복 시 반복 종료일을 설정하지 않으면, 2025-10-30일까지 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-10-01',
       startTime: '09:00',
@@ -108,11 +114,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-10-01', '2025-10-08', '2025-10-15', '2025-10-22', '2025-10-29']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-10-01', '2025-10-08', '2025-10-15', '2025-10-22', '2025-10-29']);
   });
 
   it('매월 반복 시 반복 종료일을 설정하지 않으면, 2025-10-30일까지 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-08-21',
       startTime: '09:00',
@@ -124,11 +132,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-08-21', '2025-09-21', '2025-10-21']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-08-21', '2025-09-21', '2025-10-21']);
   });
 
   it('매년 반복 시 반복 종료일을 설정하지 않으면, 2025-10-30일까지 반복 일정을 생성한다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-08-21',
       startTime: '09:00',
@@ -140,11 +150,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-08-21']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-08-21']);
   });
 
   it('매일 반복 시 시작일부터 종료일까지 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-08-01',
       startTime: '09:00',
@@ -156,7 +168,9 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual([
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual([
       '2025-08-01',
       '2025-08-02',
       '2025-08-03',
@@ -171,7 +185,7 @@ describe('generateRepeatSchedules', () => {
   });
 
   it('매주 반복 시 시작일부터 종료일까지 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-08-01',
       startTime: '09:00',
@@ -183,11 +197,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-08-01', '2025-08-08']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-08-01', '2025-08-08']);
   });
 
   it('매월 반복 시 시작일부터 종료일까지 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-06-01',
       startTime: '09:00',
@@ -199,11 +215,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-06-01', '2025-07-01', '2025-08-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-06-01', '2025-07-01', '2025-08-01']);
   });
 
   it('매년 반복 시 시작일부터 종료일까지 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2023-06-01',
       startTime: '09:00',
@@ -215,11 +233,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2023-06-01', '2024-06-01', '2025-06-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2023-06-01', '2024-06-01', '2025-06-01']);
   });
 
   it('2일 간격 반복 시, 시작일부터 종료일까지 2일 간격 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-08-01',
       startTime: '09:00',
@@ -231,11 +251,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-08-01', '2025-08-03', '2025-08-05', '2025-08-07', '2025-08-09']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-08-01', '2025-08-03', '2025-08-05', '2025-08-07', '2025-08-09']);
   });
 
   it('2주 간격 반복 시, 시작일부터 종료일까지 2주 간격 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-07-01',
       startTime: '09:00',
@@ -247,11 +269,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-07-01', '2025-07-15', '2025-07-29']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-07-01', '2025-07-15', '2025-07-29']);
   });
 
   it('2달 간격 반복 시, 시작일부터 종료일까지 2달 간격 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-06-01',
       startTime: '09:00',
@@ -263,11 +287,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-06-01', '2025-08-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-06-01', '2025-08-01']);
   });
 
   it('2년 간격 반복 시, 시작일부터 종료일까지 2년 간격 날짜가 생성된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2023-06-01',
       startTime: '09:00',
@@ -279,11 +305,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2023-06-01', '2025-08-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2023-06-01', '2025-08-01']);
   });
 
   it('매일 반복 시, 반복 간격이 10일을 넘어가면, 반복 일정 간격은 10일로 설정된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-07-01',
       startTime: '09:00',
@@ -295,11 +323,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-07-01', '2025-07-11', '2025-07-21', '2025-07-31', '2025-08-10']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-07-01', '2025-07-11', '2025-07-21', '2025-07-31', '2025-08-10']);
   });
 
   it('매주 반복 시, 반복 간격이 10주를 넘어가면, 반복 일정 간격은 10주로 설정된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2025-05-01',
       startTime: '09:00',
@@ -311,11 +341,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2025-05-01', '2025-07-10']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2025-05-01', '2025-07-10']);
   });
 
   it('매월 반복 시, 반복 간격이 10달을 넘어가면, 반복 일정 간격은 10달로 설정된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2024-07-01',
       startTime: '09:00',
@@ -327,11 +359,13 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2024-07-01', '2025-05-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2024-07-01', '2025-05-01']);
   });
 
   it('매년 반복 시, 반복 간격이 10년을 넘어가면, 반복 일정 간격은 10년으로 설정된다.', () => {
-    const result = generateRepeatSchedules({
+    const events = generateRepeatSchedules({
       title: '',
       date: '2014-07-01',
       startTime: '09:00',
@@ -343,7 +377,9 @@ describe('generateRepeatSchedules', () => {
       notificationTime: 10,
     });
 
-    expect(result).toEqual(['2014-07-01', '2025-07-01']);
+    const dates = events.map((event) => event.date);
+
+    expect(dates).toEqual(['2014-07-01', '2025-07-01']);
   });
 
   it('반복 일정을 수정하면, 단일 일정으로 변경된다.', () => {});
