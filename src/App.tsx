@@ -65,6 +65,56 @@ const notificationOptions = [
   { value: 1440, label: '1일 전' },
 ];
 
+export interface EventItemProps {
+  event: Event;
+  isNotified?: boolean;
+  variant?: 'calendar' | 'list';
+}
+
+export const EventItem = ({ event, isNotified = false, variant = 'calendar' }: EventItemProps) => {
+  const isRepeating = event.repeat.type !== 'none';
+
+  if (variant === 'calendar') {
+    return (
+      <Box
+        sx={{
+          p: 0.5,
+          my: 0.5,
+          backgroundColor: isNotified ? '#ffebee' : '#f5f5f5',
+          borderRadius: 1,
+          fontWeight: isNotified ? 'bold' : 'normal',
+          color: isNotified ? '#d32f2f' : 'inherit',
+          minHeight: '18px',
+          width: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <Stack direction="row" spacing={1} alignItems="center">
+          {isNotified && <Notifications fontSize="small" />}
+          {isRepeating && <Repeat data-testid="repeat-icon" fontSize="small" />}
+          <Typography variant="caption" noWrap sx={{ fontSize: '0.75rem', lineHeight: 1.2 }}>
+            {event.title}
+          </Typography>
+        </Stack>
+      </Box>
+    );
+  }
+
+  // list variant
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      {isNotified && <Notifications color="error" />}
+      {isRepeating && <Repeat data-testid="repeat-icon" color="action" />}
+      <Typography
+        fontWeight={isNotified ? 'bold' : 'normal'}
+        color={isNotified ? 'error' : 'inherit'}
+      >
+        {event.title}
+      </Typography>
+    </Stack>
+  );
+};
+
 function App() {
   const {
     title,
@@ -190,32 +240,12 @@ function App() {
                       .map((event) => {
                         const isNotified = notifiedEvents.includes(event.id);
                         return (
-                          <Box
+                          <EventItem
                             key={event.id}
-                            sx={{
-                              p: 0.5,
-                              my: 0.5,
-                              backgroundColor: isNotified ? '#ffebee' : '#f5f5f5',
-                              borderRadius: 1,
-                              fontWeight: isNotified ? 'bold' : 'normal',
-                              color: isNotified ? '#d32f2f' : 'inherit',
-                              minHeight: '18px',
-                              width: '100%',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            <Stack direction="row" spacing={1} alignItems="center">
-                              {isNotified && <Notifications fontSize="small" />}
-                              {event.repeat.type !== 'none' && <Repeat fontSize="small" />}
-                              <Typography
-                                variant="caption"
-                                noWrap
-                                sx={{ fontSize: '0.75rem', lineHeight: 1.2 }}
-                              >
-                                {event.title}
-                              </Typography>
-                            </Stack>
-                          </Box>
+                            event={event}
+                            isNotified={isNotified}
+                            variant="calendar"
+                          />
                         );
                       })}
                   </TableCell>
@@ -278,32 +308,12 @@ function App() {
                             {getEventsForDay(filteredEvents, day).map((event) => {
                               const isNotified = notifiedEvents.includes(event.id);
                               return (
-                                <Box
+                                <EventItem
                                   key={event.id}
-                                  sx={{
-                                    p: 0.5,
-                                    my: 0.5,
-                                    backgroundColor: isNotified ? '#ffebee' : '#f5f5f5',
-                                    borderRadius: 1,
-                                    fontWeight: isNotified ? 'bold' : 'normal',
-                                    color: isNotified ? '#d32f2f' : 'inherit',
-                                    minHeight: '18px',
-                                    width: '100%',
-                                    overflow: 'hidden',
-                                  }}
-                                >
-                                  <Stack direction="row" spacing={1} alignItems="center">
-                                    {isNotified && <Notifications fontSize="small" />}
-                                    {event.repeat.type !== 'none' && <Repeat fontSize="small" />}
-                                    <Typography
-                                      variant="caption"
-                                      noWrap
-                                      sx={{ fontSize: '0.75rem', lineHeight: 1.2 }}
-                                    >
-                                      {event.title}
-                                    </Typography>
-                                  </Stack>
-                                </Box>
+                                  event={event}
+                                  isNotified={isNotified}
+                                  variant="calendar"
+                                />
                               );
                             })}
                           </>
@@ -546,16 +556,11 @@ function App() {
               <Box key={event.id} sx={{ border: 1, borderRadius: 2, p: 3, width: '100%' }}>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      {notifiedEvents.includes(event.id) && <Notifications color="error" />}
-                      {event.repeat.type !== 'none' && <Repeat color="action" />}
-                      <Typography
-                        fontWeight={notifiedEvents.includes(event.id) ? 'bold' : 'normal'}
-                        color={notifiedEvents.includes(event.id) ? 'error' : 'inherit'}
-                      >
-                        {event.title}
-                      </Typography>
-                    </Stack>
+                    <EventItem
+                      event={event}
+                      isNotified={notifiedEvents.includes(event.id)}
+                      variant="list"
+                    />
                     <Typography>{event.date}</Typography>
                     <Typography>
                       {event.startTime} - {event.endTime}
