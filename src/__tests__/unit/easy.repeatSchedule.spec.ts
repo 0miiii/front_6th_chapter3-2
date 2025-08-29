@@ -381,12 +381,4 @@ describe('generateRepeatSchedules', () => {
 
     expect(dates).toEqual(['2014-07-01', '2025-07-01']);
   });
-
-  it('반복 일정을 수정하면, 단일 일정으로 변경된다.', () => {
-    expect(true).toBe(true);
-  });
-
-  it('반복 일정을 삭제하면, 해당 일정만 삭제된다.', () => {
-    expect(true).toBe(true);
-  });
 });
